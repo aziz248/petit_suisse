@@ -36,9 +36,11 @@ function App() {
                       Welcome to Petit Suisse!
                     </h1>
                     <p className="text-gray-700 mb-8">
-                      Choose a quiz level to start learning
+                      Petit Suisse is your go-to app for fun and interactive
+                      quizzes. Enhance your knowledge across various topics and
+                      challenge yourself with different levels of difficulty.
+                      Start your learning journey now!
                     </p>
-                    {/* Quiz level selection will be added here */}
                   </div>
                 </PrivateRoute>
               }
