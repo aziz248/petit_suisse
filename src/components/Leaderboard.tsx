@@ -3,7 +3,7 @@ import { Trophy, Award, Medal } from "lucide-react";
 import { supabase } from "../lib/supabase";
 
 interface LeaderboardUser {
-  id: number;
+  id: string;
   username: string;
   total_score: number;
 }
@@ -20,11 +20,14 @@ export function Leaderboard() {
         const { data, error } = await supabase
           .from("leader_board")
           .select("*")
-          .order("total_score", { ascending: false })
           .limit(10);
 
         if (error) throw error;
-        setUsers(data || []);
+        if (data && data.length > 0) {
+          setUsers(data);
+        } else {
+          setUsers([]);
+        }
       } catch (err) {
         setError((err as Error).message);
       } finally {
@@ -41,6 +44,12 @@ export function Leaderboard() {
 
   if (error) {
     return <div className="text-center text-red-500 p-8">Error: {error}</div>;
+  }
+
+  if (users.length === 0) {
+    return (
+      <div className="text-center p-8">No users found in the leaderboard.</div>
+    );
   }
 
   return (
@@ -61,7 +70,9 @@ export function Leaderboard() {
               {index === 2 && <Medal className="w-6 h-6 text-amber-600" />}
               <div>
                 <p className="font-semibold">{user.username}</p>
-                <p className="text-sm text-pink-600">Score: {user.total_score}</p>
+                <p className="text-sm text-pink-600">
+                  Score: {user.total_score}
+                </p>
               </div>
             </div>
             <div className="text-right">
