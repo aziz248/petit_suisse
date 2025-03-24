@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-import { v4 as uuidv4 } from "uuid";
 
 const supabaseUrl = "https://unvhxpaxqkgdreduzdcw.supabase.co";
 const supabaseAnonKey =
