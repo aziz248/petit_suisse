@@ -5,7 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { Quiz } from "./components/Quiz";
+import { QuizApp } from "./components/QuizParent";
 import { Leaderboard } from "./components/Leaderboard";
 import { Navbar } from "./components/Navbar";
 import { AuthForm } from "./components/AuthForm";
@@ -47,7 +47,7 @@ function App() {
               path="/quizzes"
               element={
                 <PrivateRoute>
-                  <Quiz onComplete={() => {}} />
+                  <QuizApp />
                 </PrivateRoute>
               }
             />
@@ -70,5 +70,4 @@ function App() {
     </Router>
   );
 }
-
 export default App;

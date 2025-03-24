@@ -1,24 +1,30 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Trophy, Award, Medal } from "lucide-react";
 import { supabase } from "../lib/supabase";
-import { Profile } from "../types";
+
+interface LeaderboardUser {
+  id: number;
+  username: string;
+  total_score: number;
+}
 
 export function Leaderboard() {
-  const [users, setUsers] = useState<Profile[]>([]);
+  const [users, setUsers] = useState<LeaderboardUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchLeaderboard() {
       try {
+        // Fetch data from the leader_board table
         const { data, error } = await supabase
-          .from("profiles")
+          .from("leader_board")
           .select("*")
           .order("total_score", { ascending: false })
           .limit(10);
 
         if (error) throw error;
-        setUsers(data);
+        setUsers(data || []);
       } catch (err) {
         setError((err as Error).message);
       } finally {
@@ -55,12 +61,11 @@ export function Leaderboard() {
               {index === 2 && <Medal className="w-6 h-6 text-amber-600" />}
               <div>
                 <p className="font-semibold">{user.username}</p>
-                <p className="text-sm text-pink-600">{user.current_level}</p>
+                <p className="text-sm text-pink-600">Score: {user.total_score}</p>
               </div>
             </div>
             <div className="text-right">
-              <p className="font-bold text-pink-600">{user.total_score}</p>
-              <p className="text-sm">Rank {index + 1}</p>
+              <p className="font-bold text-pink-600">Rank {index + 1}</p>
             </div>
           </div>
         ))}

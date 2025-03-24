@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Brain, LogOut } from "lucide-react";
 import { supabase } from "../lib/supabase";
@@ -21,7 +20,7 @@ export function Navbar() {
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-2">
               <Brain className="h-8 w-8 text-pink-600" />
-              <span className="text-xl font-bold text-pink-600">KidsLearn</span>
+              <span className="text-xl font-bold text-pink-600">Petit Suisse</span>
             </Link>
           </div>
 

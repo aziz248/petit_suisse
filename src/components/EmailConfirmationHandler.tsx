@@ -19,7 +19,7 @@ export function EmailConfirmationHandler() {
       const {
         data: { user },
         error,
-      } = await supabase.auth.setSession(accessToken);
+      } = await supabase.auth.setSession({ access_token: accessToken, refresh_token: "" });
 
       if (error) {
         console.error("Error setting session:", error.message);
@@ -37,13 +37,19 @@ export function EmailConfirmationHandler() {
             total_score: 0,
           },
         ]);
-
+        
         if (profileError) {
           console.error("Error creating profile:", profileError.message);
           navigate("/login"); // Redirect to login on error
         } else {
           console.log("Profile created successfully!");
           navigate("/"); // Redirect to home page
+          await supabase.from("leader_board").insert([
+            {
+              username: user.user_metadata.username,
+              total_score: 0,
+            },
+          ]);
         }
       }
     } else {

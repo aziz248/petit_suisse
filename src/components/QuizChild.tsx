@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Question, QuizState, DatabaseQuiz } from "../types";
-import { Star, Award, Trophy } from "lucide-react";
+import { Trophy } from "lucide-react";
 import { supabase } from "../lib/supabase";
-import Cookies from "js-cookie";
 
 interface QuizProps {
   onComplete: (score: number) => void;
+  level: "Beginner" | "Intermediate" | "Advanced"; // Add level as a prop
 }
 
-export function Quiz({ onComplete }: QuizProps) {
+export function Quiz({ onComplete, level }: QuizProps) {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [state, setState] = useState<QuizState>({
     currentQuestion: 0,
@@ -21,9 +21,11 @@ export function Quiz({ onComplete }: QuizProps) {
   useEffect(() => {
     async function fetchQuizzes() {
       try {
+        // Fetch quizzes based on the selected level
         const { data, error } = await supabase
           .from("quizzes")
           .select("*")
+          .eq("level", level) // Filter by level
           .order("difficulty");
 
         if (error) throw error;
@@ -45,7 +47,7 @@ export function Quiz({ onComplete }: QuizProps) {
     }
 
     fetchQuizzes();
-  }, []);
+  }, [level]); // Re-fetch quizzes when the level changes
 
   const handleAnswer = async (selectedOption: number) => {
     const correct =
@@ -69,7 +71,6 @@ export function Quiz({ onComplete }: QuizProps) {
             quiz_id: questions[state.currentQuestion].id,
             score: newScore,
           });
-
           await supabase
             .from("profiles")
             .update({ total_score: newScore })
@@ -113,7 +114,7 @@ export function Quiz({ onComplete }: QuizProps) {
   if (questions.length === 0) {
     return (
       <div className="text-center p-8">
-        <p className="text-pink-600">No questions available.</p>
+        <p className="text-pink-600">No questions available for this level.</p>
       </div>
     );
   }
@@ -121,7 +122,7 @@ export function Quiz({ onComplete }: QuizProps) {
   const currentQuestion = questions[state.currentQuestion];
 
   return (
-    <div className="bg-white p-8 rounded-lg shadow-lg max-w-2xl w-full">
+    <div className="bg-white p-8 rounded-lg shadow-lg max-w-2xl w-full mx-auto">
       <div className="mb-6">
         <p className="text-sm text-pink-600 mb-2">
           Question {state.currentQuestion + 1} of {questions.length}
