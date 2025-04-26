@@ -12,6 +12,7 @@ import { AuthForm } from "./components/AuthForm";
 import { ConfirmEmailPage } from "./components/ConfirmEmailPage";
 import { EmailConfirmationHandler } from "./components/EmailConfirmationHandler";
 import Cookies from "js-cookie";
+import { Home } from "./components/Home";
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const username = Cookies.get("username");
@@ -31,17 +32,7 @@ function App() {
               path="/"
               element={
                 <PrivateRoute>
-                  <div className="text-center">
-                    <h1 className="text-4xl font-bold text-pink-600 mb-4">
-                      Welcome to Petit Suisse!
-                    </h1>
-                    <p className="text-gray-700 mb-8">
-                      Petit Suisse is your go-to app for fun and interactive
-                      quizzes. Enhance your knowledge across various topics and
-                      challenge yourself with different levels of difficulty.
-                      Start your learning journey now!
-                    </p>
-                  </div>
+                    <Home />
                 </PrivateRoute>
               }
             />

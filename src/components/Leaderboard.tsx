@@ -20,6 +20,7 @@ export function Leaderboard() {
         const { data, error } = await supabase
           .from("leader_board")
           .select("*")
+          .order ("total_score", { ascending: false })
           .limit(10);
 
         if (error) throw error;

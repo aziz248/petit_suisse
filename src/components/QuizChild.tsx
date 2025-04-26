@@ -71,10 +71,20 @@ export function Quiz({ onComplete, level }: QuizProps) {
             quiz_id: questions[state.currentQuestion].id,
             score: newScore,
           });
-          await supabase
-            .from("profiles")
-            .update({ total_score: newScore })
-            .eq("id", userId);
+            const { data: profile, error: fetchError } = await supabase
+              .from("profiles")
+              .select("total_score")
+              .eq("id", userId)
+              .single();
+
+            if (fetchError) throw fetchError;
+
+            const updatedScore = (profile?.total_score || 0) + newScore;
+
+            await supabase
+              .from("profiles")
+              .update({ total_score: updatedScore })
+              .eq("id", userId);
         }
         onComplete(newScore);
       } catch (err) {
