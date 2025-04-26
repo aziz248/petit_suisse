@@ -25,7 +25,7 @@ export function Home() {
         </Link>
       </div>
       <footer className="mt-10 text-gray-600 text-sm">
-        © 2025 Petit Suisse. All rights reserved.
+        © 2025 Petit Suisse. All rights reserved.11
       </footer>
     </div>
   );
